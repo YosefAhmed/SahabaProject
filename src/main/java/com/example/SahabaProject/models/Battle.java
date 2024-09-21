@@ -1,18 +1,22 @@
 package com.example.SahabaProject.models;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.persistence.*;
+import lombok.Data;
 
 import java.util.Date;
 
-@RequiredArgsConstructor
-@Getter
-@Setter
+@Entity
+@Data
+@Table(name = "BATTLES")
 public class Battle {
+        @Id
         private String name;
-        private Date date;
+        @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+        @JoinColumn(name = "battle_location", referencedColumnName = "name")
         private Place location;
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+        private Date dateOfBattle;
         private String enemy;
         private String result;
 }

@@ -1,17 +1,17 @@
 package com.example.SahabaProject.repositories;
 import com.example.SahabaProject.models.Sahabi;
-import org.springframework.data.neo4j.repository.Neo4jRepository;
-import org.springframework.data.neo4j.repository.query.Query;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
-public interface SahabiRepo extends Neo4jRepository<Sahabi, Long> {
-    @Query("MATCH(s:Sahabi) WHERE s.name = $sahabiName RETURN s;")
-    Optional<Sahabi> findByName(String sahabiName);
+public interface SahabiRepo extends JpaRepository<Sahabi, Long> {
+    @Query("SELECT s FROM Sahabi s WHERE s.name = :name")
+    Optional<Sahabi> findByName(@Param("name") String sahabiName);
 
-    @Query("MATCH(s:Sahabi) WHERE s.nickname = $sahabiNickname RETURN s;")
-    Optional<Sahabi> findByNickname(String sahabiNickname);
-
+    @Query("SELECT s FROM Sahabi s WHERE s.nickname = :nickname")
+    Optional<Sahabi> findByNickname(@Param("nickname") String sahabiNickname);
 }

@@ -1,60 +1,37 @@
 package com.example.SahabaProject.models;
-import com.example.SahabaProject.common.Constants;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.neo4j.core.schema.Node;
-import org.springframework.data.neo4j.core.schema.Relationship;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
-
-@Node
-@RequiredArgsConstructor
-@Setter
-public class Sahabi extends Person{
-    private  String islam_Date;
-    private String characteristics;
-    private  String education;
-    @Relationship(type = "Participated", direction = Relationship.Direction.OUTGOING)
+@Entity
+@Data
+@Table(name = "SAHABA")
+public class Sahabi extends Person {
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+            name = "sahabi_battles",
+            joinColumns = {@JoinColumn(name = "sahabi_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "battle_name", referencedColumnName = "name")}
+    )
     private List<Battle> participatedBattles;
-    private  List<String> sayingsAndHadiths;
+    @Embedded
+    private Characteristic characteristics;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private Date islamDate;
+    private String education;
+    private List<String> sayingsAndHadiths;
     private String roleOrActivity;
-    private List<String> historicalEvents;
-    private  List<String> charitableActivities;
-    private  String biography;
+    private String biography;
 
-
-
-    public String getIslam_Date() {
-        return (String) Constants.checkDataStatus(islam_Date);
-    }
-
-    public String getCharacteristics() {
-        return (String) Constants.checkDataStatus(characteristics);
-    }
-
-    public String getEducation() {
-        return (String) Constants.checkDataStatus(education);
-    }
-
-    public Object getParticipatedBattles() {
-        return Constants.checkDataStatus(participatedBattles);
-    }
-
-    public Object getSayingsAndHadiths() {
-        return Constants.checkDataStatus(sayingsAndHadiths);
-    }
-
-    public String getRoleOrActivity() {
-        return (String) Constants.checkDataStatus(roleOrActivity);
-    }
-
-    public Object getHistoricalEvents() {
-        return Constants.checkDataStatus(historicalEvents);
-    }
-
-    public Object getCharitableActivities() {
-        return Constants.checkDataStatus(charitableActivities);
-    }
-
-    public String getBiography() {
-        return (String) Constants.checkDataStatus(biography);
+    /*
+     * calculates the age at joining Islam
+     * */
+    public int getAgeAtIslam() {
+        Calendar birthCalender = Calendar.getInstance(), IslamCalender = Calendar.getInstance();
+        IslamCalender.setTime(islamDate);
+        birthCalender.setTime(getBirthDate());
+        return IslamCalender.get(Calendar.YEAR) - birthCalender.get(Calendar.YEAR);
     }
 }

@@ -9,15 +9,14 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/sahabi")
+@RequestMapping("/sahaba")
 public class SahabiController {
 
     @Autowired
     SahabiService sahabiService;
     @PostMapping("/create")
     public Sahabi createSahabi(@RequestBody Sahabi sahabi){
-        sahabiService.createSahabi(sahabi);
-        return sahabi;
+        return sahabiService.createSahabi(sahabi);
     }
 
     @GetMapping("/all")
@@ -46,4 +45,12 @@ public class SahabiController {
         return "Deleted all Sahaba";
     }
 
+    @DeleteMapping("/remove")
+    public String removeById(@RequestParam long id){
+        sahabiService.removeById(id);
+        return "Deleted sahabi "+id;
+    }
+
 }
+
+
