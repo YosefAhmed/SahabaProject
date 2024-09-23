@@ -1,9 +1,7 @@
 package com.example.SahabaProject.models;
 import com.example.SahabaProject.models.enums.Gender;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.Data;
-import java.util.Date;
 import java.util.Objects;
 
 
@@ -15,19 +13,17 @@ public abstract class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "placeOfBirth_id")
     private  Place placeOfBirth;
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "placeOfDeath_id")
     private  Place placeOfDeath;
     private  String name;
     private String nickname;
     private Gender gender;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    private Date birthDate;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    private  Date deathDate;
+    private String birthYear;
+    private  String deathYear;
     @Override
     public boolean equals(Object o) {
         if(o instanceof Person) {

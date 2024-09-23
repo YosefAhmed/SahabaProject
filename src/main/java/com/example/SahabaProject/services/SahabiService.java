@@ -1,27 +1,28 @@
 package com.example.SahabaProject.services;
 
+import com.example.SahabaProject.mapper.BattleMapper;
+import com.example.SahabaProject.mapper.SahabiMapper;
 import com.example.SahabaProject.models.Battle;
 import com.example.SahabaProject.models.Place;
 import com.example.SahabaProject.models.Sahabi;
-import com.example.SahabaProject.repositories.BattleRepo;
+import com.example.SahabaProject.models.dto.SahabiDto;
 import com.example.SahabaProject.repositories.SahabiRepo;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.*;
-import java.util.stream.Collectors;
 
-@Service
+@Service@AllArgsConstructor
 public class SahabiService {
-    @Autowired
     SahabiRepo sahabiRepo;
-    @Autowired
     BattleService battleService;
+    BattleMapper battleMapper;
+    SahabiMapper sahabiMapper;
 
     @Autowired
     PlaceService placeService;
-    public Sahabi createSahabi(Sahabi sahabi) {
+    public Sahabi createSahabi(SahabiDto sahabiDto) {
+        Sahabi sahabi = sahabiMapper.toEntity(sahabiDto);
         List<Battle> selectedBattles = new ArrayList<>();
         // save battles with their locations
         for (Battle battle :
@@ -37,7 +38,9 @@ public class SahabiService {
                 }else{
                     battle.setLocation(placeService.createplace(battle.getLocation()));
                 }
-                selectedBattles.add(battle);
+
+                //save the new battles and add it to sahabi
+                selectedBattles.add(battleService.createBattle(battle));
             }
         }
         sahabi.setParticipatedBattles(selectedBattles);

@@ -1,10 +1,10 @@
 package com.example.SahabaProject.controllers;
 
 import com.example.SahabaProject.models.Sahabi;
+import com.example.SahabaProject.models.dto.SahabiDto;
 import com.example.SahabaProject.services.SahabiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -15,8 +15,8 @@ public class SahabiController {
     @Autowired
     SahabiService sahabiService;
     @PostMapping("/create")
-    public Sahabi createSahabi(@RequestBody Sahabi sahabi){
-        return sahabiService.createSahabi(sahabi);
+    public Sahabi createSahabi(@RequestBody SahabiDto sahabiDto){
+        return sahabiService.createSahabi(sahabiDto);
     }
 
     @GetMapping("/all")

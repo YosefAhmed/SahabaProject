@@ -36,8 +36,8 @@ public class BattleService {
         return battleRepo.findBattleByEnemy(enemy);
     }
 
-    public Optional<Battle> getBattleByDate(java.util.Date date) {
-        return battleRepo.findBattleByDate(date);
+    public Optional<Battle> getBattleByYearOfBattle(String yearOfBattle) {
+        return battleRepo.findBattleByYearOfBattle(yearOfBattle);
     }
 
     public List<Battle> getBattlesByLocation(Place location) {
