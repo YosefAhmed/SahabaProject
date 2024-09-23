@@ -16,6 +16,7 @@ public class Sahabi extends Person {
     private List<Battle> participatedBattles;
 //    @Embedded
 //    private Characteristic characteristics;
+
     private String islamYear;
     private String education;
 //    private List<String> sayingsAndHadiths;
